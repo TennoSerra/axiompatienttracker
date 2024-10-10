@@ -2,8 +2,11 @@ package com.axiom
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 
+
 object AxiomPatientTracker {
   import com.axiom.model.shared.dto.Patient
+
+
   
   def table  : Element = 
     import org.axiom.ui.table.utils.{*,given}
@@ -11,12 +14,12 @@ object AxiomPatientTracker {
     val g = Grid(10,10)
     
     import io.laminext.fetch._
-    import org.scalajs.dom
     import com.raquo.laminar.api.L._
     import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
     
     import org.scalajs.dom.AbortController
-
+    import com.axiom.ShapelessCaseEnum.EnumMapper.enumCoProduct
+    import com.axiom.ShapelessFieldNameExtractor.fieldNames
 
 
     val abortController = new AbortController()
@@ -24,7 +27,26 @@ object AxiomPatientTracker {
     val resultFuture = (Fetch.get("http://localhost:8080/patientsjson").future.text) (abortController  )
     Main.consoleOut ("Hey hey hey, world from console!!!!???")
     resultFuture.foreach{ response =>
-      println(response)
+      import com.axiom.model.shared.dto.Patient
+      // import com.axiom.ShapelessCaseEnum.EnumMapper
+      import zio.json._
+      import java.time._ //cross scalajs and jvm compatible
+
+      def consoleOut(msg: String): Unit = {
+        dom.console.log(s"%c $msg","background: #222; color: #bada55")
+      }
+
+      val patients =  response.data.fromJson[List[Patient]].map{
+          _.map{enumCoProduct[Patient](_)}
+        }.getOrElse(Nil)
+
+      val fieldNameList = fieldNames[Patient]  
+
+        consoleOut(s"fieldnames: $fieldNameList")
+        // consoleOut(s"patients: $patients")
+
+
+      
     }
 
     

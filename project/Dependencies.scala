@@ -8,6 +8,11 @@ object Dependencies {
     Seq("org.scala-js" %%% "scalajs-dom" % DependencyVersions.scalajsdom
     )
   }
+  val shapeless3 = Def.setting {
+    Seq("org.typelevel" %%% "shapeless3-deriving" % DependencyVersions.shapeless3)
+  }
+
+
   val aurorajslibs = Def.setting {
     Seq(
        "com.axiom" %%% "dataimportcsv3s" % "0.0.1-SNAPSHOT"

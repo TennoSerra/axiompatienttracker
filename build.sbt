@@ -13,6 +13,9 @@ lazy val client = project.in(file("client"))
   .enablePlugins(ScalablyTypedConverterExternalNpmPlugin)
   .dependsOn(shared.js)
   .settings(
+    scalacOptions ++=  Seq("-Yretain-trees",//necessary in zio-json if any case classes have default parameters
+    "-Xmax-inlines","60"), //setting max inlines to accomodate > 32 fields in case classes
+
 
     // Tell Scala.js that this is an application with a main method
     scalaJSUseMainModuleInitializer := true,
@@ -43,6 +46,7 @@ lazy val client = project.in(file("client"))
     libraryDependencies ++= Dependencies.laminar.value,
     libraryDependencies ++= Dependencies.scalatest.value,
     libraryDependencies ++= Dependencies.aurorajslibs.value,
+    libraryDependencies ++= Dependencies.shapeless3.value,
 
     // Tell ScalablyTyped that we manage `npm install` ourselves
     externalNpm := baseDirectory.value,
