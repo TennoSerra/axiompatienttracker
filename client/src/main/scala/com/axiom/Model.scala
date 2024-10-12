@@ -37,10 +37,7 @@ object ModelFetch :
     .foreach( patients =>
       Model.patientListVar.set(patients)
       Model.fieldNamesVar.set(fieldNames[Patient])
-      //TODO WORKING HERE
 
-      Main.consoleOut("ok here goes...")
-      Main.consoleOut(s"count: ${patients.size}")
       val result = TableColProperties.derived[Patient].element(patients(0))
       Model.patientFieldEnums.set(patients.map(x => TableColProperties.derived[Patient].element(x)))
     )
