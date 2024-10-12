@@ -50,13 +50,15 @@ def cellTextInput(gd:GridData): HtmlElement =
       gd.g.focusedCoodinate.update(_ => Some(gd.coordinate) )
       selectedRow(gd).foreach(d => d.toggleState.update(_ => RowSelected))
       gd.toggleState.update(_ => StateFocused)
-      gd.g.headers(gd.coordinate.x).selected.update(_ => true)
+      // gd.g.varHeaders.now()(gd.coordinate.x).selected.update(_ => true)
+      gd.g.headersSignal.map (list => list(gd.coordinate.x).selected.update(_ => true))
       gd.g.summaryText.set(gd.varData.now().toString())
     ),
     onBlur --> (e => //focus out
       gd.toggleState.update(_ => UnSelected)
       selectedRow(gd).foreach(d => d.toggleState.update(_ => UnSelected))
-      gd.g.headers(gd.coordinate.x).selected.update(_ => false)
+      gd.g.headersSignal.map (list => list(gd.coordinate.x).selected.update(_ => false))
+      // gd.g.varHeaders(gd.coordinate.x).selected.update(_ => false)
     ) ,
   )
 

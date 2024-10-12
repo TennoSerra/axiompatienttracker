@@ -1,13 +1,14 @@
 package com.axiom
 
 
+
 object ShapelessFieldNameExtractor :
   import shapeless3.deriving.*
   import scala.compiletime.{erasedValue, summonInline,constValue}
   import scala.deriving.Mirror
 
   inline def fieldNames[T](using m: Mirror.Of[T]): List[String] =
-    summonAllLabels[m.MirroredElemLabels].toList
+    summonAllLabels[m.MirroredElemLabels]
 
   inline def summonAllLabels[T <: Tuple]: List[String] =
     inline erasedValue[T] match

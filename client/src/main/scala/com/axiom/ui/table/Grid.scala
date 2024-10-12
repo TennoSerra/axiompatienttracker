@@ -23,8 +23,11 @@ given LLBufferDimensionT[GridData] with
       
 case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows):
   lazy val grid =  this.initLLBuffer
-  val headers = List("MON","TUES","WED","THU","FRI","SAT","SUN", "ETC")
-    .map(h => Header(h))
+
+  val varHeaders = Var[List[Header]](Nil)
+  val headersSignal = varHeaders.signal
+  // val headers = List("MON","TUES","WED","THU","FRI","SAT","SUN", "ETC")
+  //   .map(h => Header(h))
 
   val summaryText = Var("") 
   val focusedCoodinate  = Var[Option[Coordinate]](None)

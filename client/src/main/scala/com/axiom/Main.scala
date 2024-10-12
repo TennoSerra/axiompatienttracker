@@ -8,7 +8,7 @@ import org.scalajs.dom
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 
-object Main {
+object Main :
   def consoleOut(msg: String): Unit = {
      dom.console.log(s"%c $msg","background: #222; color: #bada55")
   }
@@ -23,4 +23,3 @@ object Main {
 
     val element = dom.document.querySelector("#app")
     renderOnDomContentLoaded(element,AxiomPatientTracker())
-}

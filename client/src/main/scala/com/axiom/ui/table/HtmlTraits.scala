@@ -29,7 +29,7 @@ given HtmlAble[Grid] with
     def htmlElement: HtmlElement = 
       def row(y:Int) = g.xRange.map(x => td(g.data(x,y).map( x => x.inputHtmlElement  ).getOrElse(div("erXror")))) 
       def rows = g.yRange.map(y => tr(row(y)))
-      def headers = g.headers.map{h => h.htmlElement }
+      def headers = g.varHeaders.now().map{_.htmlElement }
 
       table(
           thead(headers*),

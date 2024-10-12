@@ -1,7 +1,7 @@
 package com.axiom
 
 import com.raquo.laminar.api.L
-
+import java.lang.reflect.Field
 
 
 object ShapelessCaseEnum :
@@ -11,12 +11,51 @@ object ShapelessCaseEnum :
   import org.scalajs.dom
   
 
+  sealed trait DataType[+T] :
+    val value:T
+    def valueString(): String
+
+
+  case class DateT(value:LocalDate) extends DataType[LocalDate] :
+    def valueString(): String = value.toString
+  // object DateT:
+  //   def unapply(value: LocalDate): Option[LocalDate] = Some(value)  
+
+  case class DateTimeT(value: LocalDateTime) extends DataType[LocalDateTime] :
+    def valueString(): String = value.toString  
+  // object DateTimeT:
+  //   def unapply(value: LocalDateTime): Option[LocalDateTime] = Some(value)  
+
+  case class BooleanT(value:Boolean) extends DataType[Boolean] :
+    def valueString(): String = value.toString     
+  // object BooleanT:
+    def unapply(value: Boolean): Option[Boolean] = Some(value)
+
+  case class StringT(value:String) extends DataType[String]  :
+    def valueString(): String = value.toString
+  // object StringT:
+  //   def unapply(value: String): Option[String] = Some(value)
+
+  case class IntT(value:Int) extends DataType[Int] :
+    def valueString(): String = value.toString
+  // object IntT:
+  //   def unapply(value: Int): Option[Int] = Some(value)
+  case class OptionT[A](value: Option[A]) extends DataType[Option[A]] :
+    def valueString():String = value.toString()
+
+
+
+  trait TraitMapper[A] :
+    def map(a:A) : List[DataType[A]]
+
+
   trait EnumMapper[A]:
     def map(a: A): List[FieldType]
 
-    
+
+
   enum FieldType :
-    case DateT(value: LocalDate)
+    case DateT(value: LocalDate) 
     case DateTimeT(value: LocalDateTime) 
     case DateTimeOpt(value: Option[LocalDateTime])
     case LocalDateTimeOpt(value: Option[LocalDateTime])
@@ -25,13 +64,41 @@ object ShapelessCaseEnum :
     case StringOpt(value: Option[String])
     case IntT(value: Int)
 
-  extension (d:FieldType.DateT) 
-    def element:Element = div(d.value.toString)
-  extension (d:FieldType.DateTimeT)
-    def element:Element = div(d.value.toString)    
+  /**
+    * 
+    */
+
+  object TraitMapper :
+    given TraitMapper[LocalDate] = DateT(_) +: Nil
+    given TraitMapper[LocalDateTime] = DateTimeT(_) +: Nil
+    given TraitMapper[Boolean] = BooleanT(_) +: Nil
+    given TraitMapper[String] = StringT(_) +: Nil
+    given TraitMapper[Int] =  IntT(_) +: Nil
+    
+   // Implicit instance for Option
+    given [A](using ev: TraitMapper[A]): TraitMapper[Option[A]] with
+      def map(a: Option[A]): List[DataType[Option[A]]] = a match
+        case Some(value) => ev.map(value).map(x => OptionT(a))
+        case None => List(OptionT(None))
+
+      // def deriveTraitProduct[A](using pInst: K0.ProductInstances[TraitMapper, A], labelling: Labelling[A]  ): TraitMapper[A] =
+      // (a: A) =>
+      //   labelling.elemLabels.zipWithIndex
+      //     .map { (label, index) =>
+      //       val value = pInst.project(a)(index)([t] => (st: TraitMapper[t], pt: t) => st.map(pt))
+      //       value
+      //     }.foldLeft(List.empty[DataType[A]])(_ ++ _)
+      // def deriveTraitSum[A](using inst: K0.CoproductInstances[TraitMapper, A] ): TraitMapper[A] =
+      //   (a: A) => inst.fold(a)([a] => (st: TraitMapper[a], a: a) => st.map(a))
+
+      // inline given derived[A](using gen: K0.Generic[A]): TraitMapper[A] =
+      //   gen.derive(deriveTraitProduct, deriveTraitSum)
 
 
-  
+      // def traitCoProduct [T] (v:T)(using  x: TraitMapper[T]) = x.map(v)  
+
+
+
   object EnumMapper:
     given EnumMapper[Int] = FieldType.IntT(_) +: Nil
     given EnumMapper[Boolean] = FieldType.BooleanT(_) +: Nil
