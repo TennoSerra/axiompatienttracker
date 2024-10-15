@@ -87,7 +87,7 @@ class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
 
   def tableCell(colRow:ColRow) : HtmlElement  =
     td(
-      tabIndex := colRow.row*9000 + colRow.col,
+      tabIndex := colRow.row*9000 + colRow.col, //apparently I need this capture keyboard events
       onKeyDown --> keyboardHandler,
       onMouseUp.mapTo(colRow).map(Some(_)) --> selectedCellVar.writer,
       data(colRow).map{ gcdTuple => 
