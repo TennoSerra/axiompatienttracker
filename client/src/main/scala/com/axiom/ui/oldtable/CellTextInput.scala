@@ -1,8 +1,8 @@
-package org.axiom.ui.table.utils
-import org.axiom.ui.table.{Grid,GridData, Data}
+package org.axiom.ui.oldtable.utils
+import org.axiom.ui.oldtable.{Grid,GridData, Data}
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
-import org.axiom.ui.table.utils.given
+import org.axiom.ui.oldtable.utils.given
 // import typings.std.stdStrings.text
 
 enum EditorToggleState(colorString:String):

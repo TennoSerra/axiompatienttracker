@@ -1,7 +1,7 @@
-package org.axiom.ui.table
+package org.axiom.ui.oldtable
 import org.scalajs.dom
 import collection.mutable.ListBuffer
-import org.axiom.ui.table.utils.{Coordinate, LLBufferDimensionT, GridT, GridDataT}
+import org.axiom.ui.oldtable.utils.{Coordinate, LLBufferDimensionT, GridT, GridDataT}
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 import java.time.LocalDateTime
@@ -51,8 +51,8 @@ case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows):
 
 
 case class GridData(g:Grid,x:Int,y:Int,d:Data) extends  GridDataT[Grid,Data](g,d) :
-  import  org.axiom.ui.table.utils.EditorToggleState.* 
-  import org.axiom.ui.table.utils.given
+  import  org.axiom.ui.oldtable.utils.EditorToggleState.* 
+  import org.axiom.ui.oldtable.utils.given
 
   lazy val inputHtmlElement = this.htmlElement
   val toggleState = Var(UnSelected)

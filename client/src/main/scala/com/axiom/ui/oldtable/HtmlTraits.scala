@@ -1,6 +1,6 @@
-package org.axiom.ui.table.utils
+package org.axiom.ui.oldtable.utils
 
-import org.axiom.ui.table.{Grid,GridData,Header}
+import org.axiom.ui.oldtable.{Grid,GridData,Header}
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 

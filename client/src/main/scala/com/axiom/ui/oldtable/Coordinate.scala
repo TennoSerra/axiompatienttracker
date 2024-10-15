@@ -1,4 +1,4 @@
-package org.axiom.ui.table.utils
+package org.axiom.ui.oldtable.utils
 
 case class Coordinate(x:Int,y:Int) :
   def addX(x:Int):Coordinate =

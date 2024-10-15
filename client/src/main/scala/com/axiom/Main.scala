@@ -22,4 +22,5 @@ object Main :
 
 
     val element = dom.document.querySelector("#app")
+    ModelFetch.fetchPatients
     renderOnDomContentLoaded(element,AxiomPatientTracker())

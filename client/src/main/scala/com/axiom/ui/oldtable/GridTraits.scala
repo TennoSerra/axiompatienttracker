@@ -1,4 +1,4 @@
-package org.axiom.ui.table.utils
+package org.axiom.ui.oldtable.utils
 
 import collection.mutable.ListBuffer
 import org.scalajs.dom.Coordinates
