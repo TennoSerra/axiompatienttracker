@@ -5,3 +5,5 @@ case class ColRow(col:Int,row:Int) :
     this.copy(col = this.col+col)
   def addY(row:Int):ColRow =
     this.copy(row= this.row+ row)
+  def add(vector:ColRow)  =
+    this.copy(vector.col+col,vector.row+row)

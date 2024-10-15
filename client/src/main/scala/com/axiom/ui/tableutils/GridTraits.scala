@@ -9,11 +9,12 @@ type CCRowList[CC] = List[CC]  //list of case classes
 type CellDataGrid[D] = List[List[D]] //list of cell data
 type CellDataIndexedGrid[D] = mutable.IndexedSeq[mutable.IndexedSeq[D]]  //indexed list of cell data
 
-
 trait GridT[CC,D]:
 
   type GCD = mutable.IndexedSeq[mutable.IndexedSeq[(GridT[CC,D],ColRow,D)]]
   type GCDTuple = (GridT[CC,D],ColRow,D)
+  type Row =mutable.IndexedSeq[GCDTuple]
+
   //abstract methods
   def cctoData(row:Int,cc:CC):List[D] //abstract method to convert case class to List of data for rendering on table
   
@@ -22,6 +23,7 @@ trait GridT[CC,D]:
     val indexedgrid : CellDataIndexedGrid[D] = grid.map(_.to(mutable.IndexedSeq)).to(mutable.IndexedSeq) //convert list of list to indexed list of indexed list
     val newgcd = indexedgrid.zipWithIndex.map{(rowList,d) => rowList.zipWithIndex.map{(data,c) => (this,ColRow(c,d),data)}}
     gcdVar.set(newgcd)
+    
 
   val gcdVar : Var[GCD] = Var(mutable.IndexedSeq.empty[mutable.IndexedSeq[(GridT[CC,D],ColRow,D)]].empty)
   // lazy val gcd :GCD = indexedrid.zipWithIndex.map{(rowList,d) => rowList.zipWithIndex.map{(data,c) => (this,ColRow(c,d),data)}}
