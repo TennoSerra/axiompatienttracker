@@ -66,7 +66,7 @@ class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
       )
 
     table(
-      onKeyDown --> tableKeyboardHandler,
+      onKeyDown --> tableKeyboardHandler,//prevents default scrolling behaviour from various key strokes
       thead(
         children <-- colHeadersVar.signal.map{headerRow(_) }
       ),
@@ -96,6 +96,12 @@ class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
       }.getOrElse("---")
     )
 
+  /**
+    * event handler at the table later to prevent default behaviour from key actions
+    * that can cause the web page to scroll
+    *
+    * @param e
+    */
   def tableKeyboardHandler(e:KeyboardEvent)  =
     e.keyCode match 
       case 40 => e.preventDefault()
