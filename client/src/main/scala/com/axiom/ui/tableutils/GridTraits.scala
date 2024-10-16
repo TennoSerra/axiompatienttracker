@@ -11,6 +11,7 @@ type CellDataIndexedGrid[D] = mutable.IndexedSeq[mutable.IndexedSeq[D]]  //index
 
 trait GridT[CC,D]:
 
+  //GCD is short for the tuple (Grid,ColRow, Data)
   type GCD = mutable.IndexedSeq[mutable.IndexedSeq[(GridT[CC,D],ColRow,D)]]
   type GCDTuple = (GridT[CC,D],ColRow,D)
   type Row =mutable.IndexedSeq[GCDTuple]
