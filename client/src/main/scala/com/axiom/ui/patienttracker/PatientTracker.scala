@@ -56,9 +56,6 @@ class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
 
 
   def renderHtml: L.Element = 
-    
-
-
     def headerRow(s:List[String]) = 
       List(tr(
           s.map (s => th(s))
