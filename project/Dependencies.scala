@@ -4,6 +4,15 @@ import sbt._
 object Dependencies {
 
 
+  /**
+    * Unless you have some very, very specific and unusual requirements, this is the optimal 
+    * ExecutionContext implementation for use in any Scala.js project. If you're using ExecutionContext 
+    * and not using this project, you likely have some serious bugs and/or performance issues waiting to be discovered.
+    */
+  val scalajsmacrotaskexecutor =  Def.setting {
+    Seq("org.scala-js" %%% "scala-js-macrotask-executor" % DependencyVersions.scalajsmacrotaskexecutor
+    )
+  }
   val scalajsdom  = Def.setting {
     Seq("org.scala-js" %%% "scalajs-dom" % DependencyVersions.scalajsdom
     )

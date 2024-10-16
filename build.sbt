@@ -43,6 +43,7 @@ lazy val client = project.in(file("client"))
      * It provides static types for the browser DOM APIs.
      */
     libraryDependencies ++= Dependencies.scalajsdom.value,
+    libraryDependencies ++= Dependencies.scalajsmacrotaskexecutor.value,
     libraryDependencies ++= Dependencies.laminar.value,
     libraryDependencies ++= Dependencies.scalatest.value,
     libraryDependencies ++= Dependencies.aurorajslibs.value,
