@@ -10,7 +10,6 @@ import org.scalajs.dom.AbortController
 import scala.concurrent.Future
 import com.raquo.airstream.ownership.OneTimeOwner
 
-import scala.scalajs.js
 import com.raquo.laminar.api.L._
 import io.laminext.fetch._
 import org.scalajs.dom.Response
@@ -30,12 +29,11 @@ class PatientTrackerTest extends  wordspec.AsyncWordSpec with should.Matchers {
   "this" should {
     "work" in {
       given owner:Owner = new OneTimeOwner(()=>())
-      import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
        val result = for {
         _     <- Future { info("Fetching data") }
         data  <- ModelFetch.fetch
-        pt    <- Future{PatientTracker(data)} 
+        pt    <- Future{PatientTracker()} 
         elem  <- Future(pt.data(1,1))
         _     <- Future{info(s"elem: $elem")}
       } yield data

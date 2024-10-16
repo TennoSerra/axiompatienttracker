@@ -66,6 +66,7 @@ class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
       )
 
     table(
+      onKeyDown --> tableKeyboardHandler,
       thead(
         children <-- colHeadersVar.signal.map{headerRow(_) }
       ),
@@ -95,6 +96,16 @@ class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
       }.getOrElse("---")
     )
 
+  def tableKeyboardHandler(e:KeyboardEvent)  =
+    e.keyCode match 
+      case 40 => e.preventDefault()
+      case 38 => e.preventDefault()
+      case 37 => e.preventDefault()
+      case 39 => e.preventDefault()
+      case 32 => e.preventDefault()
+      case _  => ()  
+
+    
 
   def keyboardHandler(e:KeyboardEvent)  =
     val selectedCellOpt = selectedCellVar.now()
@@ -106,16 +117,16 @@ class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
           case _ => ()
       }
     e.keyCode match
-    case 40 =>  //down cursor
-      conditionalUpdate(ColRow(0,1))
-    case 38 => //up cursor
-      conditionalUpdate(ColRow(0,-1))
-    case 37 => //left cursor
-      conditionalUpdate(ColRow(-1,0))
-    case 39 => //right cursor
-      conditionalUpdate(ColRow(-1,0))
-    case 9 => //tab
-      // dom.window.console.log(s"tabbed ${gd.coordinate}tab tab tab ")
-    case _ => ()
+      case 40 =>  //down cursor
+        conditionalUpdate(ColRow(0,1))
+      case 38 => //up cursor
+        conditionalUpdate(ColRow(0,-1))
+      case 37 => //left cursor
+        conditionalUpdate(ColRow(-1,0))
+      case 39 => //right cursor
+        conditionalUpdate(ColRow(-1,0))
+      case 9 => //tab
+        // dom.window.console.log(s"tabbed ${gd.coordinate}tab tab tab ")
+      case _ => ()
 
 
