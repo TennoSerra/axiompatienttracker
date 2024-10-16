@@ -12,7 +12,7 @@ object AxiomPatientTracker :
  
   def apply():Element = 
 
-    import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
+    import org.scalajs.macrotaskexecutor.MacrotaskExecutor.Implicits.global
     val patientTracker = new PatientTracker()
     ModelFetch.fetchPatients.foreach{ p => 
       patientTracker.populate(p)

@@ -29,7 +29,12 @@ trait GridT[CC,D]:
   val gcdVar : Var[GCD] = Var(mutable.IndexedSeq.empty[mutable.IndexedSeq[(GridT[CC,D],ColRow,D)]].empty)
   // lazy val gcd :GCD = indexedrid.zipWithIndex.map{(rowList,d) => rowList.zipWithIndex.map{(data,c) => (this,ColRow(c,d),data)}}
 
-  def colRange = (0 until gcdVar.now().head.size)
+  def colRange = 
+    val x = gcdVar.now()
+    x.size match {
+      case 0 => (0 until 0)
+      case _ => (0 until x.head.size)
+    }
   def rowRange = (0 until gcdVar.now().size)
   
   def inBounds(c:ColRow): Boolean = 

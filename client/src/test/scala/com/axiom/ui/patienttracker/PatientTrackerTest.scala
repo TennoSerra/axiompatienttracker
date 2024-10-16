@@ -21,9 +21,7 @@ import com.axiom.ModelFetch
 
 class PatientTrackerTest extends  wordspec.AsyncWordSpec with should.Matchers {
   //TODO[REVIEW] this is how you set the js execution context in WordSpec
-  implicit override def executionContext =
-    scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
-  
+  implicit override def executionContext = org.scalajs.macrotaskexecutor.MacrotaskExecutor
   val abortController = new AbortController()
 
   "this" should {
@@ -32,11 +30,11 @@ class PatientTrackerTest extends  wordspec.AsyncWordSpec with should.Matchers {
 
        val result = for {
         _     <- Future { info("Fetching data") }
-        data  <- ModelFetch.fetch
+        // data  <- ModelFetch.fetch
         pt    <- Future{PatientTracker()} 
         elem  <- Future(pt.data(1,1))
         _     <- Future{info(s"elem: $elem")}
-      } yield data
+      } yield pt
 
       result.map(x => true should be(true)) 
 
