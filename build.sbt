@@ -51,6 +51,7 @@ lazy val client = project.in(file("client"))
 
     // Tell ScalablyTyped that we manage `npm install` ourselves
     externalNpm := baseDirectory.value,
+    // Test / envFileName := ".env"
   )
 
 

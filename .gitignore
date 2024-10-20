@@ -63,3 +63,6 @@ bin/
 project/metals.sbt
 client/package-lock.json
 project/metals.sbt
+
+#consider adding .env to preserve privacy if necessary
+#.env
