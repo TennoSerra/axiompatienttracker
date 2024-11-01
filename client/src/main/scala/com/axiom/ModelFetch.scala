@@ -38,7 +38,7 @@ object ModelFetch :
     import com.axiom.model.shared.dto.Patient 
     import com.axiom.ShapelessFieldNameExtractor
     
-    Fetch.get("http://localhost:8080/patientsjson").future.text(abortController)
+    Fetch.get("http://localhost:8080/patients").future.text(abortController)
       .map(s => s.data.fromJson[List[Patient]])
       .map(r => r.toOption.getOrElse(Nil))
 
