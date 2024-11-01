@@ -37,8 +37,9 @@ class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
   given owner:Owner = new OneTimeOwner(()=>())
   val selectedCellVar:Var[Option[ColRow]] = Var(None)
   val selectedRowVar:Var[Option[Int]] = Var(None)
-
-
+  val searchQueryVar: Var[String] = Var("")
+  
+  
   selectedCellVar.signal.map {
     case Some(sel) => Some(sel.row)
     case None => None
@@ -73,24 +74,43 @@ class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
   override def cctoData(row:Int,cc:Patient):List[CellData] = columns(row,cc)
 
 
+  // Rudimentary serach filter function, could be made column/data agnostic to be able to use for all columns of the patient data.
+  def searchFilterFunction(patient: Patient): Boolean = {
+    val query = searchQueryVar.now().toLowerCase
+    val patientName = patient.firstName +" "+patient.lastName
+    patientName.toLowerCase.contains(query) 
+  }
+  
   def renderHtml: L.Element = 
-    def headerRow(s:List[String]) = 
-      List(tr(
-          s.map (s => th(s))
+    def headerRow(s: List[String]) = 
+      List(tr(s.map(s => th(s))))
+  
+    div(
+      // Search bar
+      div(
+        label("Search: "),
+        input(
+          typ := "text",
+          placeholder := "Search patients...",
+          inContext { thisNode =>
+            onInput.mapTo(thisNode.ref.value) --> searchQueryVar
+          }
+        )
+      ),
+      
+      // Render table with filtered rows
+      table(
+        onKeyDown --> tableKeyboardHandler,
+        thead(
+          children <-- colHeadersVar.signal.map(headerRow)
+        ),
+        tbody(
+          children <-- gcdVar.signal.map{ 
+            (rowList:GCD) => rowList.map(tup => row(tup))
+          }
         )
       )
-
-    table(
-      onKeyDown --> tableKeyboardHandler,//prevents default scrolling behaviour from various key strokes
-      thead(
-        children <-- colHeadersVar.signal.map{headerRow(_) }
-      ),
-      tbody(
-        children <-- gcdVar.signal.map{ 
-          (rowList:GCD) => rowList.map(tup => row(tup))
-        }
-      )
-  )
+    )
   
 
   def row(cols: Row) = tr(
