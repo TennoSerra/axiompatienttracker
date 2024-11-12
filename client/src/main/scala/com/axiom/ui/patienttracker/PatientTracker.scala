@@ -31,7 +31,6 @@ case class PatientGridData(grid: PatientTracker,colrow:ColRow, data:CellData)
 
 
 
-
 class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
 
   given owner:Owner = new OneTimeOwner(()=>())
@@ -45,25 +44,10 @@ class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
     case None => None
   }.foreach(selectedRowVar.set)
   
-  selectedRowVar.signal.foreach {
-    case Some(rowIdx) =>
-      Option(dom.document.getElementById(s"row-$rowIdx")).foreach { element =>
-        val rect = element.getBoundingClientRect()
-        val isInView = rect.top >= 0 && rect.bottom <= dom.window.innerHeight
-      
-        if (!isInView) {
-          element.asInstanceOf[js.Dynamic].scrollIntoView(
-            js.Dynamic.literal(
-              behavior = "smooth",
-              block = "center" // Optional: centers the row in view
-            )
-          )
-        }
-      }     
-    case None => // Do nothing if no row is selected
+  selectedRowVar.signal.foreach { rowIdxOpt =>
+    scrollToSelectedRow(rowIdxOpt)
   }
-  
-  
+
   val colHeadersVar:Var[List[String]] = Var(ShapelessFieldNameExtractor.fieldNames[Patient].take(10))
 
   def columns(row:Int,p:Patient) =  
@@ -81,6 +65,26 @@ class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
     patientName.toLowerCase.contains(query) 
   }
   
+  def scrollToSelectedRow(rowIdxOpt: Option[Int]): Unit = {
+    rowIdxOpt match {
+      case Some(rowIdx) =>
+        Option(dom.document.getElementById(s"row-$rowIdx")).foreach { element =>
+          val rect = element.getBoundingClientRect()
+          val isInView = rect.top >= 0 && rect.bottom <= dom.window.innerHeight
+
+          if (!isInView) {
+            element.asInstanceOf[js.Dynamic].scrollIntoView(
+              js.Dynamic.literal(
+                behavior = "smooth",
+                block = "nearest"
+              )
+            )
+          }
+        }
+      case None => // Do nothing
+    }
+  }
+
   def renderHtml: L.Element = 
     def headerRow(s: List[String]) = 
       List(tr(s.map(s => th(s))))
