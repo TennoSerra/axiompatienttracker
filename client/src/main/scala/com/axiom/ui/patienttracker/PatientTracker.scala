@@ -87,11 +87,13 @@ class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
 
   def renderHtml: L.Element = 
     def headerRow(s: List[String]) = 
-      List(tr(s.map(s => th(s))))
-  
+      List(tr(s.map(s => th(s, cls := "sticky-header"))))
+    
     div(
-      // Search bar
+      cls := "table-container",  // Wrapper for both sticky bar and table
       div(
+        cls := "sticky-bar",
+        // Search bar
         label("Search: "),
         input(
           typ := "text",
@@ -104,17 +106,21 @@ class PatientTracker() extends GridT [Patient,CellData] with RenderHtml:
       
       // Render table with filtered rows
       table(
+        cls := "sticky-table",
         onKeyDown --> tableKeyboardHandler,
         thead(
           children <-- colHeadersVar.signal.map(headerRow)
         ),
         tbody(
-          children <-- gcdVar.signal.map{ 
-            (rowList:GCD) => rowList.map(tup => row(tup))
+          children <-- gcdVar.signal.map { 
+            (rowList: GCD) => rowList.map(tup => row(tup))
           }
         )
       )
     )
+
+
+
   
 
   def row(cols: Row) = tr(

@@ -95,3 +95,41 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Container for sticky bar and table */
+.table-container {
+  width: 80%; /* Set desired width for both the table and sticky bar */
+  margin: 0 auto; /* Center-align the container */
+}
+
+/* Sticky bar */
+.sticky-bar {
+  position: fixed;
+  top: 0;
+  width: 100%; /* Inherit the width from the container */
+  background-color: #272323;
+  z-index: 10;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+
+/* Sticky table header */
+.sticky-table thead {
+  position: sticky;
+  top: 40px; /* Adjust based on the sticky bar height */
+  z-index: 5;
+}
+
+.sticky-header {
+  background-color: #272323; /* Set a background color for readability */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for separation */
+}
+
+/*Removes the highlight on cells when using tab on the tables*/
+td:focus {
+  outline: none; /* Disables the default focus outline */
+}
